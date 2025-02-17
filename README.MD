@@ -20,7 +20,7 @@ npx hardhat run scripts/deploy.js --network local
 ### Projekt initialisieren:
 
 1. Git Repository clonen
-git clone https://github.com/molgerz/BlockAidV2.git
+git clone https://github.com/molgerz/BlockAid1
 
 2. dann im backend Ordner vom Projekt:
 npm install --save-dev hardhat 
