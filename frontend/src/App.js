@@ -5,10 +5,11 @@ import CreateCampaignModal from "./components/CreateCampaignModal"
 import CampaignCard from "./components/CampaignCard";
 
 // Adresse des deployed Contracts
-const CONTRACT_ADDRESS = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+const CONTRACT_ADDRESS = "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9";
 
 // Contract-ABI: Definiert die Funktionen, die vom Contract bereitgestellt werden
 const ABI = [
+    "event DonationReceived(uint256 indexed campaignId, address indexed donor, uint256 donationAmount, uint256 currentAmount)",
     "function createCampaign(address _owner, string memory _title, string memory _description, string memory _image, uint256 _goal, uint256 _deadline) external returns (uint)",
     "function donate(uint256 _id) external payable",
     "function deleteCampaign(uint256 _id) external",

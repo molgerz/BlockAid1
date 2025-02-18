@@ -10,7 +10,7 @@ const CampaignCard = ({ campaign, account, donateToCampaign, deleteCampaign, cla
     // Prüfe, ob das Ziel erreicht wurde
     const targetReached = Number(campaign.currentAmount) >= Number(campaign.goal);
     // Lokaler State zur Speicherung des anzuzeigenden Betrags
-    const [displayedAmount, setDisplayedAmount] = useState(Number(campaign.currentAmount));
+    const [displayedAmount, setDisplayedAmount] = useState(BigInt(campaign.currentAmount.toString()));
 
     // Diese useEffect-Funktion queryt die Blockchain nach DonationReceived-Events 
     // für die aktuelle Kampagne und aktualisiert den lokalen State (displayedAmount)
@@ -28,19 +28,19 @@ const CampaignCard = ({ campaign, account, donateToCampaign, deleteCampaign, cla
                         // Nehme den letzten Event (angenommen, er enthält den kumulierten Wert)
                         const lastEvent = events[events.length - 1];
                         console.log("Letzter Event currentAmount:", lastEvent.args.currentAmount.toString());
-                        setDisplayedAmount(Number(lastEvent.args.currentAmount));
+                        setDisplayedAmount(lastEvent.args.currentAmount);
                     } else {
                         // Falls keine Events gefunden wurden, nutze den Fallback nur, wenn die Kampagne noch aktiv ist (Status 0)
                         console.log("Keine Events gefunden – Fallback. campaign.status:", campaign.status);
                         if (Number(campaign.status) === 0) {
-                            setDisplayedAmount(Number(campaign.currentAmount));
+                            setDisplayedAmount(campaign.currentAmount.toString());
                         }
                     }
                 } catch (error) {
                     console.error("Fehler beim Abrufen der Donation-Events:", error);
                     // Bei einem Fehler ebenfalls nur fallback nutzen, wenn Kampagne aktiv ist
                     if (Number(campaign.status) === 0) {
-                        setDisplayedAmount(Number(campaign.currentAmount));
+                        setDisplayedAmount(campaign.currentAmount.toString());
                     }
                 }
             }
@@ -128,15 +128,15 @@ const CampaignCard = ({ campaign, account, donateToCampaign, deleteCampaign, cla
             {/* Direkt unter dem Bild: ProgressBar */}
             <div style={{ marginTop: "10px" }}>
                 <ProgressBar
-                    current={displayedAmount}
-                    goal={Number(campaign.goal)}
+                    current={BigInt(displayedAmount)}
+                    goal={BigInt(campaign.goal.toString())}
                 />
             </div>
 
             {/* Beträge: Gesammelt und Ziel */}
             <div style={{ display: "flex", justifyContent: "space-between", marginTop: "5px", fontSize: "0.9rem" }}>
-                <span><strong>Gesammelt:</strong> {ethers.formatEther(String(displayedAmount))} ETH</span>
-                <span><strong>Ziel:</strong> {ethers.formatEther(String(campaign.goal))} ETH</span>
+                <span><strong>Gesammelt:</strong> {ethers.formatEther(BigInt(displayedAmount.toString()))} ETH</span>
+                <span><strong>Ziel:</strong> {ethers.formatEther(BigInt(campaign.goal.toString()))} ETH</span>
             </div>
 
             {/* Deadline – nur Datum, ohne Uhrzeit */}

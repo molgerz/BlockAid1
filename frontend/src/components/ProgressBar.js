@@ -2,8 +2,15 @@ import React from 'react'
 
 const ProgressBar = ({ current, goal }) => {
   // Prozentwert berechnen und zwischen 0 und 100 clampen
-  const percentage = Math.min(100, Math.max(0, (current / goal) * 100))
-  const p = percentage / 100
+  const rawPercentageBigInt = (current * 100n) / goal;
+  const clampedPercentageBigInt = rawPercentageBigInt < 0n
+    ? 0n
+    : rawPercentageBigInt > 100n
+      ? 100n
+      : rawPercentageBigInt;
+
+  const percentage = Number(clampedPercentageBigInt)
+  const p = percentage / 100;
 
   // Startfarbe (bei 0%) = #f44336 -> (244,67,54)
   // Endfarbe (bei 100%) = #4caf50 -> (76,175,80)
